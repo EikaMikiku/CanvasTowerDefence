@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Test</title>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <script type="text/javascript" src="res.js"></script>
+        <script type="text/javascript" src="astar.js"></script>
+        <script type="text/javascript" src="Turret.js"></script>
+        <script type="text/javascript" src="Enemy.js"></script>
+        <script type="text/javascript" src="MouseManager.js"></script>
+        <script type="text/javascript" src="ShopManager.js"></script>
+        <script type="text/javascript" src="game.js"></script>
+    </head>
+    <body>
+        <div>
+            <canvas id="canvas" width="400" height="300"></canvas>
+            <img id="enemy0" class="enemyIcon" src="enemies/enemy0.png"/>
+            <img id="enemy1" class="enemyIcon" src="enemies/enemy1.png"/>
+            <img id="enemy2" class="enemyIcon" src="enemies/enemy2.png"/>
+            <img id="enemy3" class="enemyIcon" src="enemies/enemy3.png"/>
+            <img id="turret0" class="turretIcon" src="turrets/turret0.png"/>
+            <img id="turret1" class="turretIcon" src="turrets/turret1.png"/>
+        </div>
+        <div id="currentItemContainer">
+            <img id="currentItemImg"/>
+            <div id="currentItemInfo">
+                <div id="currentItemDamage">Damage:</div>
+                <div id="currentItemRate">Fire rate:</div>
+                <div id="currentItemRange">Range:</div>
+                <div id="currentItemCost">Cost:</div>
+            </div>
+        </div>
+        <div id="goldContainer"></div>
+        <div id="hpContainer"></div>
+    </body>
+</html>

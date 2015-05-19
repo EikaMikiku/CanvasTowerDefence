@@ -1,0 +1,29 @@
+body {
+	margin: 10px;
+	padding: 0;
+}
+canvas {
+    cursor: url("cursor.png"), auto;
+}
+.enemyIcon {
+	display: none;
+}
+.turretIcon {
+	cursor: pointer;
+}
+#goldContainer, #hpContainer {
+	font: 20px Arial;
+	clear: both;
+}
+#currentItemContainer {
+	position: absolute;
+	top: 10px;
+	left: 420px;
+}
+#currentItemImg {
+	width: 100px;
+	height: 100px;
+}
+#currentItemInfo {
+	font: 16px Arial;
+}
