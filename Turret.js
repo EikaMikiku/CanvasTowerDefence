@@ -20,7 +20,9 @@ Turret.prototype.shoot = function(enemy) {
         enemy.hp -= this.damage;
         if(enemy.hp <= 0) {
             Game.getInstance().removeEnemy(enemy);
-            ShopManager.getInstance().addGold(enemy.goldGain);
+            var gain = ~~(enemy.goldGain * (Game.getInstance().getDifficultyIncrease() / 4000));
+            ShopManager.getInstance().addGold(gain);
+            Game.getInstance().addScore(gain);
         }
         setTimeout(function(that) {
             return function() {

@@ -14,7 +14,7 @@ var ShopManager = (function() {
 
         /*INIT*/
         ShopManager.init = function() {
-            goldContainer.innerText = gold +" gold";
+            goldContainer.textContent = gold +" gold";
             updateCurrentItem(currentItem);
             for(var i = 0; i < turretImages.length; i++) {
                 (function(num) {
@@ -28,17 +28,20 @@ var ShopManager = (function() {
         function updateCurrentItem(id) {
             currentItem = id;
             currentItemImg.src = document.getElementById("turret"+currentItem).src;
-            damageText.innerText = "Damage: " + TurretTypes[id].damage;
-            rateText.innerText = "Fire rate: " + TurretTypes[id].frequency;
-            rangeText.innerText = "Range: " + TurretTypes[id].range;
-            costText.innerText = "Cost: " + TurretTypes[id].cost;
+            console.log(id);
+            console.log(TurretTypes[id]);
+            damageText.textContent = "Damage: " + TurretTypes[id].damage;
+            console.log("Damage: " + TurretTypes[id].damage);
+            rateText.textContent = "Fire rate: " + TurretTypes[id].frequency;
+            rangeText.textContent = "Range: " + TurretTypes[id].range;
+            costText.textContent = "Cost: " + TurretTypes[id].cost;
         }
 
         ShopManager.purchase = function() {
             var currentItemCost = TurretTypes[currentItem].cost;
             if(currentItemCost <= gold) {
                 gold -= currentItemCost;
-                goldContainer.innerText = gold +" gold";
+                goldContainer.textContent = gold +" gold";
                 return true;
             }
             return false; //cannot purchase
@@ -50,7 +53,7 @@ var ShopManager = (function() {
 
         ShopManager.addGold = function(amount) {
             gold += amount;
-            goldContainer.innerText = gold +" gold";
+            goldContainer.textContent = gold +" gold";
         }
 
         return ShopManager;

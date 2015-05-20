@@ -4,8 +4,7 @@ function Enemy(x, y, path, type) {
     this.x = x;
     this.y = y;
     this.moveSpeed = EnemyTypes[this.type].speed;
-    this.hp = EnemyTypes[this.type].hp + Game.getInstance().getDifficultyIncrease()/80;
-    console.log(this.hp);
+    this.hp = EnemyTypes[this.type].hp * (Game.getInstance().getDifficultyIncrease()/2000);
     this.goldGain = EnemyTypes[this.type].goldGain;
     this.endPoint = Game.getInstance().getEnemiesEndPoint();
     this.path = path;
@@ -65,7 +64,7 @@ Enemy.prototype.move = function() {
 };
 
 Enemy.prototype.updatePath = function() {
-    this.updateAvailable = true;;
+    this.updateAvailable = true;
 };
 
 Enemy.prototype.render = function() {

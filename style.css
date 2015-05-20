@@ -11,7 +11,7 @@ canvas {
 .turretIcon {
 	cursor: pointer;
 }
-#goldContainer, #hpContainer {
+#goldContainer, #hpContainer, #scoreContainer {
 	font: 20px Arial;
 	clear: both;
 }

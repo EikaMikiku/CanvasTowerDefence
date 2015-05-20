@@ -12,6 +12,8 @@ var Game = (function() {
         var gameMap = [];
         var hp = 30;
         var hpContainer = document.getElementById("hpContainer");
+        var score = 0;
+        var scoreContainer = document.getElementById("scoreContainer");
         var difficultyIncrease = 0;
         /*Enemy vars*/
         var enemySpawnPoint = {
@@ -25,6 +27,7 @@ var Game = (function() {
         var enemyPath = null;
         var enemies = [];
         var enemyTimeout = 1200;
+        var enemyMinTimeout = 80;
         var enemyAllowed = false;
         /*Turret vars*/
         var turrets = [];
@@ -52,28 +55,40 @@ var Game = (function() {
 
             //Set purchase on click
             MouseManager.getInstance().addClickHandler(function() {
-                if(ShopManager.getInstance().purchase()) {
-                    var pos = MouseManager.getInstance().getCellMousePos();
-                    gameMap[pos.y][pos.x] = BlockTypes[1];
+                var pos = MouseManager.getInstance().getCellMousePos();
+                if(gameMap[pos.y][pos.x].name !== "air") {
+                    return;
+                }
+                gameMap[pos.y][pos.x] = BlockTypes[1];
+                if(updateEnemyPath() && ShopManager.getInstance().purchase()) {
                     turrets.push(new Turret(pos.x, pos.y, ShopManager.getInstance().getCurrentItem()));
-                    for(var i = 0; i < enemies.length; i++) {
-                        enemies[i].updatePath();
-                    }
-                    updateEnemyPath();
+                    updateAllEnemiesPaths();
+                } else {
+                    gameMap[pos.y][pos.x] = BlockTypes[0];
                 }
             });
             enemyPath = aStar(enemySpawnPoint.x, enemySpawnPoint.y, enemyEndPoint.x, enemyEndPoint.y);
             setTimeout(function() {
                 enemyAllowed = true;
             }, 4000);
-            hpContainer.innerText = "HP: " + hp;
+            hpContainer.textContent = "HP: " + hp;
+            scoreContainer.textContent = "Score: " + score;
             loop();
         };
 
         function updateEnemyPath() {
-            enemyPath = aStar(enemySpawnPoint.x, enemySpawnPoint.y, enemyEndPoint.x, enemyEndPoint.y);
-            if(!enemyPath) {
+            var newPath = aStar(enemySpawnPoint.x, enemySpawnPoint.y, enemyEndPoint.x, enemyEndPoint.y);
+            if(!newPath) {
                 alert("No path found");
+                return false;
+            }
+            enemyPath = newPath;
+            return true;
+        }
+
+        function updateAllEnemiesPaths() {
+            for(var i = 0; i < enemies.length; i++) {
+                enemies[i].updatePath();
             }
         }
 
@@ -82,17 +97,20 @@ var Game = (function() {
             if(enemyAllowed && enemyPath) {
                 enemyAllowed = false;
                 enemies.push(new Enemy(enemySpawnPoint.x, enemySpawnPoint.y, enemyPath, ~~(Math.random()*4)));
-
+                var timeout = enemyTimeout - difficultyIncrease/60;
+                if(timeout < enemyMinTimeout) {
+                    timeout = enemyMinTimeout;
+                }
                 setTimeout(function() {
                     enemyAllowed = true;
-                }, enemyTimeout-difficultyIncrease/800)
+                }, timeout)
             }
             (function MoveEnemies() {
                 for(var i = 0; i < enemies.length; i++) {
                     enemies[i].move();
                 }
             })();
-            difficultyIncrease++;
+            difficultyIncrease+=2;
             render();
             requestAnimationFrame(loop);
         };
@@ -140,7 +158,7 @@ var Game = (function() {
                 for(var i = 0; i < turrets.length; i++) {
                     var tRange = turrets[i].range;
                     turrets[i].render();
-                    //Check turret proximity
+                    //Check enemy proximity
                     for(var t = 0; t < enemies.length; t++) {
                         var distance = Math.abs(enemies[t].x - turrets[i].x) + Math.abs(enemies[t].y - turrets[i].y);
                         if(distance < tRange) {
@@ -167,12 +185,18 @@ var Game = (function() {
             }
         };
         
+        /*GAME FUNCS*/
         Game.loseHp = function(amount) {
             hp -= amount;
             if(hp <= 0) {
                 alert("Game over");
             }
-            hpContainer.innerText = "HP: " + hp;
+            hpContainer.textContent = "HP: " + hp;
+        };
+
+        Game.addScore = function(amount) {
+            score += amount;
+            scoreContainer.textContent = "Score: " + score;
         };
 
         /*PUBLIC GETTERS*/
@@ -193,6 +217,9 @@ var Game = (function() {
         };
         Game.getDifficultyIncrease = function() {
             return difficultyIncrease;
+        };
+        Game.getScore = function() {
+            return score;
         };
 
         return Game;

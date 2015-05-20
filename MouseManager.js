@@ -14,10 +14,11 @@ var MouseManager = (function() {
         MouseManager.init = function() {
             canvas.addEventListener("mousemove", function(e) {
                 var rect = canvas.getBoundingClientRect();
-                x = e.x - rect.left;
-                y = e.y - rect.top;
+                x = e.clientX - rect.left;
+                y = e.clientY - rect.top;
                 cellX = ~~(x/cellSize);
                 cellY = ~~(y/cellSize);
+                
             });
             canvas.addEventListener("mousedown", function() {
                 isDown = true;
